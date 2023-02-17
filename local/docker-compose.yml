@@ -13,7 +13,7 @@ services:
         target: /app/
 
   feature-store:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/mssql/server:2022-RTM-GDR1-ubuntu-20.04
     ports:
       - "${LOCAL_MSSQL_PORT}:1433"
     environment:

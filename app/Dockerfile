@@ -25,6 +25,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# Install the odbc Drivers to access the database
+RUN apt-get update && apt-get install -y --no-install-recommends locales apt-transport-https \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/11/prod.list \
+        > /etc/apt/sources.list.d/mssql-release.list \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && locale-gen \
+    && apt-get update \
+    && apt-get -y --no-install-recommends install unixodbc-dev libodbc1 \
+    && ACCEPT_EULA=Y apt-get -y --no-install-recommends install msodbcsql18
+
 # Create and use a non-root user
 RUN useradd -m appUser
 USER appUser

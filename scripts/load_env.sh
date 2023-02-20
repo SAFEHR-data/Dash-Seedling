@@ -18,11 +18,16 @@ set -o pipefail
 set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ENV_FILEPATH="${SCRIPT_DIR}/../.env" 
 
-echo "Exporting environment variables..."
-
-read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
-export "${args[@]}"
+if [ -f "$ENV_FILEPATH" ]; then
+    read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
+    export "${args[@]}"
+    echo "Exported environment variables in .env"
+else
+    echo "Expecting a .env file which did not exist"
+    exit 1
+fi
 
 # Admin username and password for the SQL server. The username must be "sa"
 export LOCAL_MSSQL_USERNAME="sa"

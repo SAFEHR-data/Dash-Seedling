@@ -15,6 +15,22 @@
 
 set -o errexit
 set -o pipefail
+set -o nounset
 
-./create.sh &
-/opt/mssql/bin/sqlservr
+function server_is_initialising() {
+    exit_code=$(/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$SA_PASSWORD" -Q "SELECT 1" 2> /dev/null ; echo $?)
+    
+    if [ "$exit_code" -ne 0 ]; then
+        echo "Server is initalising"
+    fi
+
+    return $exit_code
+}
+
+while server_is_initialising
+do
+    sleep 10
+done
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$SA_PASSWORD" -d master -i create.sql
+echo "Created database from create.sql"

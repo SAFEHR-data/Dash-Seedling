@@ -18,7 +18,7 @@ FROM python:3.10.10-bullseye
 WORKDIR /app
 
 # Copy the required files into the working directory
-COPY app.py requirements.txt /app/
+COPY *.py requirements.txt /app/
 
 # Install the Python dependencies
 RUN --mount=type=cache,target=/root/.cache/pip \

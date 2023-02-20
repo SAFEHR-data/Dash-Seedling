@@ -15,7 +15,6 @@ services:
   feature-store:
     build:
       context: mssql
-      Dockerfile: .
       args:
         - MSSQL_SA_USERNAME="${LOCAL_MSSQL_USERNAME}"
         - MSSQL_SA_PASSWORD="${LOCAL_MSSQL_PASSWORD}"

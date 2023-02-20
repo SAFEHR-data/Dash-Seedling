@@ -19,7 +19,7 @@ set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-if [ "${ENV}" = "local" ]; then
+if [ "${ENVIRONMENT}" = "local" ]; then
     cd "${SCRIPT_DIR}/../app/"
     docker build -t "${LOCAL_IMAGE_NAME}" .
     cd -

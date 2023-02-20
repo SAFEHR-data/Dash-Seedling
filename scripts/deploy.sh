@@ -20,14 +20,14 @@ set -o nounset
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ARCHITECTURE=$(uname -m)
 
-if [ "${ENV}" = "local" ]; then
+if [ "${ENVIRONMENT}" = "local" ]; then
 
     if [ "${ARCHITECTURE}" == "arm64" ]; then
         echo "Local deployment is not supported on arm. CosmosDB docker container fails: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/54"
         exit 1
     fi
 
-    docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/../local/docker-compose.yml" up -d
+    docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/../local/docker-compose.yml" up --build -d
     
     echo "Local stack created"
     echo "App:          http://localhost:${LOCAL_APP_PORT}"

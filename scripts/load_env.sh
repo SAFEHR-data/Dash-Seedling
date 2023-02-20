@@ -18,9 +18,9 @@ set -o pipefail
 set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ENV_FILEPATH="${SCRIPT_DIR}/../.env" 
+ENVIRONMENT_FILEPATH="${SCRIPT_DIR}/../.env" 
 
-if [ -f "$ENV_FILEPATH" ]; then
+if [ -f "$ENVIRONMENT_FILEPATH" ]; then
     read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
     export "${args[@]}"
     echo "Exported environment variables in .env"

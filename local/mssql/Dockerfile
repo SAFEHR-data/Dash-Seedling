@@ -15,11 +15,4 @@
 FROM mcr.microsoft.com/mssql/server:2022-RTM-GDR1-ubuntu-20.04
 
 COPY *.sh *.sql ./
-
-ARG LOCAL_MSSQL_USERNAME
-ARG LOCAL_MSSQL_PASSWORD
-
-ENV ACCEPT_EULA "Y"
-ENV SA_USERNAME ${LOCAL_MSSQL_USERNAME}
-ENV SA_PASSWORD ${LOCAL_MSSQL_PASSWORD}
-CMD ["./entrypoint.sh"]
+CMD ["/bin/bash", "-c", "./create.sh & /opt/mssql/bin/sqlservr"]

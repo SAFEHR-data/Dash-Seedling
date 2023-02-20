@@ -22,10 +22,10 @@ ARCHITECTURE=$(uname -m)
 
 if [ "${ENV}" = "local" ]; then
 
-    #if [ "${ARCHITECTURE}" == "arm64" ]; then
-    #    echo "Local deployment is not supported on arm. CosmosDB docker container fails: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/54"
-    #    exit 1
-    #fi
+    if [ "${ARCHITECTURE}" == "arm64" ]; then
+        echo "Local deployment is not supported on arm. CosmosDB docker container fails: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/54"
+        exit 1
+    fi
 
     docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/../local/docker-compose.yml" up -d
     

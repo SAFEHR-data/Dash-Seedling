@@ -13,12 +13,14 @@ services:
         target: /app/
 
   feature-store:
-    image: mcr.microsoft.com/mssql/server:2022-RTM-GDR1-ubuntu-20.04
+    build:
+      context: mssql
+      Dockerfile: .
+      args:
+        - MSSQL_SA_USERNAME="${LOCAL_MSSQL_USERNAME}"
+        - MSSQL_SA_PASSWORD="${LOCAL_MSSQL_PASSWORD}"
     ports:
       - "${LOCAL_MSSQL_PORT}:1433"
-    environment:
-      MSSQL_SA_PASSWORD: "${LOCAL_MSSQL_PASSWORD}"
-      ACCEPT_EULA: "Y"
 
   cosmosdb:
     image:  mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator

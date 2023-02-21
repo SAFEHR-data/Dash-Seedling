@@ -20,10 +20,6 @@ WORKDIR /app
 # Copy the required files into the working directory
 COPY *.py requirements.txt /app/
 
-# Install the Python dependencies
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
 
 # Install the odbc Drivers to access the database
 RUN apt-get update && apt-get install -y --no-install-recommends locales apt-transport-https \
@@ -35,6 +31,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales apt-tra
     && apt-get update \
     && apt-get -y --no-install-recommends install unixodbc-dev libodbc1 \
     && ACCEPT_EULA=Y apt-get -y --no-install-recommends install msodbcsql18
+
+# Install the Python dependencies
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Create and use a non-root user
 RUN useradd -m appUser

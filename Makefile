@@ -16,9 +16,8 @@
 SHELL:=/bin/bash
 MAKEFILE_FULLPATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MAKEFILE_DIR := $(dir $(MAKEFILE_FULLPATH))
-LINTER_REGEX_INCLUDE?=all # regex to specify which files to include in local linting (defaults to "all")
 
-target_title = @echo -e "\n\e[34m»»» 🌺 \e[96m$(1)\e[0m..."
+target_title = @echo -e "🌱$(1)..."
 
 all: deploy
 
@@ -30,9 +29,17 @@ help: ## Show this help
 	@echo
 
 deploy: build ## Deploy this app
-	. ${MAKEFILE_DIR}/scripts/load_env.sh \
+	$(call target_title, "Deploying") \
+	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
 	&& ${MAKEFILE_DIR}/scripts/deploy.sh
 
-build:
-	. ${MAKEFILE_DIR}/scripts/load_env.sh \
+build:  ## Build the docker image
+	$(call target_title, "Building") \
+	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
 	&& ${MAKEFILE_DIR}/scripts/build.sh
+
+
+stop-local:  ## Stop a locally running version
+	$(call target_title, "Stopping") \
+	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
+	&& ${MAKEFILE_DIR}/scripts/stop_local.sh

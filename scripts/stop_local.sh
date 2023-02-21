@@ -17,21 +17,13 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-function server_is_initialising() {
-    
-    exit_code=$(/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT 1" &> /dev/null ; echo $?)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ARCHITECTURE=$(uname -m)
 
-    if [ $exit_code -ne 0 ]; then
-        echo "Server is initalising"
-        return 0
-    else
-        return 1
-    fi
-}
+if [ "${ENVIRONMENT}" != "local" ]; then
+    echo "Cannot stop a non local deployed version"
+    exit 1
+fi
 
-while server_is_initialising; do
-    sleep 5
-done
-
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -d master -i create.sql
-echo "Created database from create.sql"
+docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/../local/docker-compose.yml" down
+echo "Stopped local app"

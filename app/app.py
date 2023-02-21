@@ -18,11 +18,6 @@ from typing import Any
 import plotly.express as px
 import pandas as pd
 
-import pyodbc
-from azure.cosmos import CosmosClient
-from azure.identity import DefaultAzureCredential
-
-
 app = Dash(__name__)
 server = app.server
 environment = os.environ.get("ENVIRONMENT", default="dev")
@@ -46,29 +41,29 @@ app.layout = html.Div(children=[
 
 def odbc_cursor() -> Any:
     """
-    ODBC cursor
+    ODBC cursor for running queries against the MSSQL feature store.
 
     Documentation: https://github.com/mkleehammer/pyodbc/wiki
     """
+    import pyodbc
+
     connection = pyodbc.connect(os.environ["FEATURE_STORE_CONNECTION_STRING"])
     return connection.cursor()
 
 
-def cosmos_client() -> CosmosClient:
+def cosmos_client() -> "CosmosClient":
     """
-    CosmosDB client
+    CosmosDB client for connecting with the state store.
 
     Documentation: https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-python
     """
-
-    if environment == "local":
-        credential = os.environ["COSMOSDB_KEY"]
-    else:
-        credential = DefaultAzureCredential()
+    from azure.cosmos import CosmosClient
+    from azure.identity import DefaultAzureCredential
 
     client = CosmosClient(
         os.environ["COSMOSDB_ENDPOINT"],
-        credential=credential,
+        credential=(DefaultAzureCredential() if environment != "local"
+                    else os.environ["COSMOSDB_KEY"]),
         connection_verify=(environment != "local")
     )
     return client

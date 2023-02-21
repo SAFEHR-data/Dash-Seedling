@@ -19,11 +19,6 @@ set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-if [ "${ENVIRONMENT}" = "local" ]; then
-    cd "${SCRIPT_DIR}/../app/"
-    docker build -t "${LOCAL_IMAGE_NAME}" .
-    cd -
-else
-    echo "Non local building is unsupported"
-    exit 1
-fi
+cd "${SCRIPT_DIR}/../app/"
+docker build -t "${LOCAL_IMAGE_NAME}" .
+cd -

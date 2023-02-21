@@ -35,6 +35,13 @@ if [ "${ENVIRONMENT}" = "local" ]; then
     echo "Check status: docker compose -p ${APP_NAME} ps"
 
 else
-    echo "Non local deployment is unsupported"
-    exit 1
+
+    echo "Loging into an azure container registry"
+    echo "$ACR_PASSWORD" | docker login --username "$ACR_USERNAME" --password-stdin
+    
+    REMOTE_IMAGE_NAME="${ACR_REPOSITORY}/${APP_NAME}"
+    docker tag "${LOCAL_IMAGE_NAME}" "${REMOTE_IMAGE_NAME}"
+
+    echo "Pushing container: ${REMOTE_IMAGE_NAME}"
+    docker push "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"
 fi

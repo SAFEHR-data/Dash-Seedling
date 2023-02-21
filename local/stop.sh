@@ -18,18 +18,11 @@ set -o pipefail
 set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ARCHITECTURE=$(uname -m)
 
-if [ "${ENVIRONMENT}" = "local" ]; then
-    echo "Cannot deploy from local"
+if [ "${ENVIRONMENT}" != "local" ]; then
+    echo "Cannot stop a non local deployed version"
     exit 1
 fi
 
-echo "Loging into an azure container registry"
-echo "${ACR_PASSWORD}" | docker login --username "${ACR_USERNAME}" --password-stdin
-
-REMOTE_IMAGE_NAME="${ACR_REPOSITORY}/${APP_NAME}"
-docker tag "${LOCAL_IMAGE_NAME}" "${REMOTE_IMAGE_NAME}"
-
-echo "Pushing container: ${REMOTE_IMAGE_NAME}"
-docker push "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"
+docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/docker-compose.yml" down
+echo "Stopped local app"

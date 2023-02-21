@@ -20,7 +20,6 @@ WORKDIR /app
 # Copy the required files into the working directory
 COPY *.py requirements.txt /app/
 
-
 # Install the odbc Drivers to access the database
 RUN apt-get update && apt-get install -y --no-install-recommends locales apt-transport-https \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \

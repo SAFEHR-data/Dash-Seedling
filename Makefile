@@ -19,8 +19,6 @@ MAKEFILE_DIR := $(dir $(MAKEFILE_FULLPATH))
 
 target_title = @echo -e "🌱$(1)..."
 
-all: deploy
-
 help: ## Show this help
 	@echo
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -38,8 +36,12 @@ build:  ## Build the docker image
 	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
 	&& ${MAKEFILE_DIR}/scripts/build.sh
 
+serve-local:  ## Serve the app locally
+	$(call target_title, "Stopping") \
+	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
+	&& ${MAKEFILE_DIR}/local/serve.sh
 
 stop-local:  ## Stop a locally running version
 	$(call target_title, "Stopping") \
 	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
-	&& ${MAKEFILE_DIR}/scripts/stop_local.sh
+	&& ${MAKEFILE_DIR}/local/stop.sh

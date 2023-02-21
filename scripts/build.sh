@@ -19,6 +19,8 @@ set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+echo "Building ${LOCAL_IMAGE_NAME}..."
+
 cd "${SCRIPT_DIR}/../app/"
 docker build -t "${LOCAL_IMAGE_NAME}" .
 cd -

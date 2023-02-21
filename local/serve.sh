@@ -21,9 +21,17 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ARCHITECTURE=$(uname -m)
 
 if [ "${ENVIRONMENT}" != "local" ]; then
-    echo "Cannot stop a non local deployed version"
+    echo "\$ENVIRONMENT must be set to local in order to serve locally"
+fi
+
+if [ "${ARCHITECTURE}" == "arm64" ]; then
+    echo "Serving locally is not supported on arm. CosmosDB docker container fails: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/54"
     exit 1
 fi
 
-docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/../local/docker-compose.yml" down
-echo "Stopped local app"
+docker compose -p "${APP_NAME}" -f "${SCRIPT_DIR}/docker-compose.yml" up --build -d
+
+echo "Local stack created"
+echo "App:          http://localhost:${LOCAL_APP_PORT}"
+echo "SQL server:   host=localhost:${LOCAL_MSSQL_PORT} username=${LOCAL_MSSQL_USERNAME} password=${LOCAL_MSSQL_PASSWORD}"
+echo "Check status: docker compose -p ${APP_NAME} ps"

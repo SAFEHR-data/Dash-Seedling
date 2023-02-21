@@ -15,12 +15,15 @@ Template repository for building [dash](https://plotly.com/dash/) apps on [FlowE
 cp .env.sample .env
 ```
 
-2. Run `make` to build the sample Dash Docker container and serve it locally
+2. Run `make serve-local` to build the sample Dash Docker container and serve it locally
+
 ```
-make deploy
+make serve-local
 # ...
 # App: http://localhost:8050
 ```
+
+and stop with `make stop-local`
 
 ### CI
 

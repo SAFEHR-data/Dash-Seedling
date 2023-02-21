@@ -10,7 +10,7 @@ Template repository for building [dash](https://plotly.com/dash/) apps on [FlowE
 
 ### Locally
 
-1. Configure the local confgiruation file
+1. Configure the local configuration file
 ```
 cp .env.sample .env
 ```
@@ -27,5 +27,5 @@ and stop with `make stop-local`
 
 ### CI
 
-Please contact a FlowEHR admin to deploy to the FlowEHR infrastructrue where a 
-managed repositry will be created with credentials to deploy to the cloud.
+Please contact a FlowEHR admin to deploy to the FlowEHR infrastructure where a 
+managed repository will be created with credentials to deploy to the cloud.

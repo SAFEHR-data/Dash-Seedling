@@ -22,6 +22,7 @@ ARCHITECTURE=$(uname -m)
 
 if [ "${ENVIRONMENT}" != "local" ]; then
     echo "\$ENVIRONMENT must be set to local in order to serve locally"
+    exit 1
 fi
 
 if [ "${ARCHITECTURE}" == "arm64" ]; then

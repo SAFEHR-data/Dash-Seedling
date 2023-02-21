@@ -37,7 +37,7 @@ build:  ## Build the docker image
 	&& ${MAKEFILE_DIR}/scripts/build.sh
 
 serve-local:  ## Serve the app locally
-	$(call target_title, "Stopping") \
+	$(call target_title, "Serving locally") \
 	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
 	&& ${MAKEFILE_DIR}/local/serve.sh
 

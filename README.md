@@ -1,6 +1,6 @@
 # 🌱 Dash-Seedling
 
-Template repository for building [dash](https://plotly.com/dash/) apps on [FlowEHR](https://github.com/UCLH-Foundry/FlowEHR).
+Template repository for building [dash](https://dash.plotly.com/) apps on [FlowEHR](https://github.com/UCLH-Foundry/FlowEHR).
 
 > **Warning**
 > This repository is a _work in progress_. We're working towards a v0.1.0 release
@@ -23,7 +23,10 @@ make serve-local
 # App: http://localhost:8050
 ```
 
-and stop with `make stop-local`
+and stop with `make stop-local`.
+
+> **Note**
+> Local serving does not work on ARM, including Apple M chips.
 
 ### CI
 

@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+
+  app:
+    image: ${LOCAL_IMAGE_NAME}
+    build:
+      context: ../app/
+      args:
+        - LOCAL_MSSQL_HOST="mssql"
+        - LOCAL_MSSQL_PORT="1433"
+        - LOCAL_MSSQL_USERNAME="${LOCAL_MSSQL_USERNAME}"
+        - LOCAL_MSSQL_PASSWORD="${LOCAL_MSSQL_PASSWORD}"
+    ports:
+      - "${LOCAL_APP_PORT}:8000"
+    environment:
+      ENVIRONMENT: "${ENVIRONMENT}"
+      FEATURE_STORE_CONNECTION_STRING: Driver={ODBC Driver 18 for SQL Server};Server=mssql;PORT=1433;Database=feature-store;Uid=${LOCAL_MSSQL_USERNAME};Pwd=${LOCAL_MSSQL_PASSWORD};TrustServerCertificate=yes
+      COSMOSDB_ENDPOINT: https://cosmosdb:8081
+      COSMOSDB_KEY: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+    command: python app.py
+    volumes:
+      - type: bind
+        source: ./../app/
+        target: /app/
+
+  mssql:
+    build:
+      context: mssql
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_USERNAME: "${LOCAL_MSSQL_USERNAME}"
+      MSSQL_SA_PASSWORD: "${LOCAL_MSSQL_PASSWORD}"
+    ports:
+      - "${LOCAL_MSSQL_PORT}:1433"
+
+  cosmosdb:
+    image:  mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    platform: linux/amd64
+    stdin_open: true
+    tty: true
+    ports:
+      - '8081:8081'
+      - '8900:8900'
+      - '8901:8901'
+      - '8902:8902'
+      - '10250:10250'
+      - '10251:10251'
+      - '10252:10252'
+      - '10253:10253'
+      - '10254:10254'
+      - '10255:10255'
+      - '10256:10256'
+      - '10350:10350'
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 2
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: true
+      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "${LOCAL_COSMOS_IP_ADDRESS}"
+    volumes:
+      - cosmos:/tmp/cosmos/appdata
+
+volumes:
+  cosmos:

@@ -18,6 +18,7 @@ set -o pipefail
 set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ARCHITECTURE=$(uname -m)
 
 if [ "${ARCHITECTURE}" == "arm64" ]; then
     DOCKER_BUILD_COMMAND="docker buildx build --platform linux/amd64"

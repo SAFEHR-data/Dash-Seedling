@@ -7,9 +7,6 @@ on:
         type: string
         required: true
     secrets:
-      APP_NAME:
-        description: "Name of the app used to name the docker image"
-        required: true
       ACR_NAME:
         description: "Name of the Azure container registry to deploy to"
         required: true
@@ -18,9 +15,6 @@ on:
         required: true
       ACR_PASSWORD:
         description: "Token password to login to the ACR"
-        required: true
-      ACR_REPOSITORY:
-        description: "Repository within the ACR to push the container to"
         required: true
 
 jobs:
@@ -38,10 +32,9 @@ jobs:
       - name: Build and deploy
         env:
           ENVIRONMENT: ${{ inputs.environment }}
-          APP_NAME: ${{ secrets.APP_NAME }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
           ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-          ACR_REPOSITORY: ${{ secrets.ACR_REPOSITORY }}
+          REMOTE_IMAGE_NAME: ${{ github.repository }}
           DOCKER_BUILDKIT: 1 
         run: make deploy

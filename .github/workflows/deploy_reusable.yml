@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy Reusable
 
 on:
   workflow_call:
@@ -7,6 +7,9 @@ on:
         type: string
         required: true
     secrets:
+      APP_NAME:
+        description: "Name of the app used to name the docker image"
+        required: true
       ACR_NAME:
         description: "Name of the Azure container registry to deploy to"
         required: true
@@ -35,6 +38,7 @@ jobs:
       - name: Build and deploy
         env:
           ENVIRONMENT: ${{ inputs.environment }}
+          APP_NAME: ${{ secrets.APP_NAME }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
           ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

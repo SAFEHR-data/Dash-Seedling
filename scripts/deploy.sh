@@ -25,11 +25,9 @@ if [ "${ENVIRONMENT}" = "local" ]; then
     exit 1
 fi
 
-echo "Loging into an azure container registry"
-echo "${ACR_PASSWORD}" | docker login --username "${ACR_USERNAME}" --password-stdin
-
-REMOTE_IMAGE_NAME="${ACR_REPOSITORY}/${APP_NAME}"
-docker tag "${LOCAL_IMAGE_NAME}" "${REMOTE_IMAGE_NAME}"
+echo "Logging into an azure container registry"
+echo "${ACR_PASSWORD}" | docker login "${ACR_NAME}.azurecr.io" --username "${ACR_USERNAME}" --password-stdin
+docker tag "${LOCAL_IMAGE_NAME}" "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"
 
 echo "Pushing container: ${REMOTE_IMAGE_NAME}"
 docker push "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"

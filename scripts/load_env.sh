@@ -20,18 +20,28 @@ set -o nounset
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ENVIRONMENT_FILEPATH="${SCRIPT_DIR}/../.env" 
 
-if [ -f "$ENVIRONMENT_FILEPATH" ]; then
-    read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
-    export "${args[@]}"
-    echo "Exported environment variables in .env"
+
+function export_local_env(){
+    if [ -f "$ENVIRONMENT_FILEPATH" ]; then
+        read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
+        export "${args[@]}"
+        echo "Exported environment variables in .env"
+    else
+        echo "Expecting a .env file which did not exist"
+        exit 1
+    fi
+
+    # Admin username and password for the SQL server. The username must be "sa"
+    export LOCAL_MSSQL_USERNAME="sa"
+    export LOCAL_MSSQL_PASSWORD="aStrongPa@sword"
+
+    # See: https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-linux
+    export LOCAL_COSMOS_IP_ADDRESS="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+}
+
+if [ "${ENVIRONMENT}" = "local" ]; then
+    export_local_env
 else
-    echo "Expecting a .env file which did not exist"
-    exit 1
+    echo "Running in CI. Expecting envrionment variables to be set"
+    export LOCAL_IMAGE_NAME="app"
 fi
-
-# Admin username and password for the SQL server. The username must be "sa"
-export LOCAL_MSSQL_USERNAME="sa"
-export LOCAL_MSSQL_PASSWORD="aStrongPa@sword"
-
-# See: https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-linux
-export LOCAL_COSMOS_IP_ADDRESS="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"

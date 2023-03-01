@@ -1,0 +1,39 @@
+name: Build and Deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+    secrets:
+      ACR_NAME:
+        description: "Name of the Azure container registry to deploy to"
+        required: true
+      ACR_USERNAME:
+        description: "Token name to login to the ACR"
+        required: true
+      ACR_PASSWORD:
+        description: "Token password to login to the ACR"
+        required: true
+      ACR_REPOSITORY:
+        description: "Repository within the ACR to push the container to"
+        required: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build and deploy
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+          ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+          ACR_REPOSITORY: ${{ secrets.ACR_REPOSITORY }}
+        run: make deploy

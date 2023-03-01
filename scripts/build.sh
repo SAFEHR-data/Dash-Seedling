@@ -19,8 +19,14 @@ set -o nounset
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-echo "Building ${LOCAL_IMAGE_NAME}..."
+if [ "${ARCHITECTURE}" == "arm64" ]; then
+    DOCKER_BUILD_COMMAND="docker buildx build --platform linux/amd64"
+else
+    DOCKER_BUILD_COMMAND="docker build"
+fi
+
+echo "Building ${LOCAL_IMAGE_NAME} for amd64..."
 
 cd "${SCRIPT_DIR}/../app/"
-docker build -t "${LOCAL_IMAGE_NAME}" .
+eval "${DOCKER_BUILD_COMMAND} -t ${LOCAL_IMAGE_NAME} ."
 cd -

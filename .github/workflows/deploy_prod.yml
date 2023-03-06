@@ -19,8 +19,7 @@ jobs:
       - name: Slot swap
         run: |
           az webapp deployment slot swap \
-            --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} \
-            --name ${{ secrets.WEBAPP_NAME }} \
+            --ids ${{ secrets.WEBAPP_ID }} \
             --slot staging \
             --target-slot prod \
             --action swap

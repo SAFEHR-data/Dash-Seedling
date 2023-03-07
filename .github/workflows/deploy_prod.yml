@@ -21,5 +21,4 @@ jobs:
           az webapp deployment slot swap \
             --ids ${{ secrets.WEBAPP_ID }} \
             --slot staging \
-            --target-slot prod \
             --action swap

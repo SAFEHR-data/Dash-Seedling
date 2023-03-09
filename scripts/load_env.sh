@@ -39,7 +39,7 @@ function export_local_env(){
     export LOCAL_COSMOS_IP_ADDRESS="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
 }
 
-if [ "${ENVIRONMENT}" = "local" ]; then
+if [ "${ENVIRONMENT:=local}" = "local" ]; then
     export_local_env
 else
     echo "Running in CI. Expecting envrionment variables to be set"

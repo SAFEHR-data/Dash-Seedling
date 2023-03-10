@@ -1,4 +1,4 @@
-name: Build and Deploy Reusable
+name: Build and Deploy to ACR Reusable
 
 on:
   workflow_call:

@@ -16,6 +16,9 @@ on:
       ACR_PASSWORD:
         description: "Token password to login to the ACR"
         required: true
+      IMAGE_NAME:
+        description: "Name of the docker image to push to the ACR"
+        required: true
 
 jobs:
   build-and-deploy:
@@ -35,6 +38,6 @@ jobs:
           ACR_NAME: ${{ secrets.ACR_NAME }}
           ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-          REMOTE_IMAGE_NAME: ${{ github.repository }}
+          REMOTE_IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
           DOCKER_BUILDKIT: 1 
         run: make deploy

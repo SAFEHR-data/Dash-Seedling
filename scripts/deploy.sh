@@ -17,9 +17,6 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ARCHITECTURE=$(uname -m)
-
 if [ "${ENVIRONMENT}" = "local" ]; then
     echo "Cannot deploy from local"
     exit 1
@@ -27,7 +24,7 @@ fi
 
 echo "Logging into an azure container registry"
 echo "${ACR_PASSWORD}" | docker login "${ACR_NAME}.azurecr.io" --username "${ACR_USERNAME}" --password-stdin
-docker tag "${LOCAL_IMAGE_NAME}" "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"
+docker tag "${LOCAL_IMAGE_NAME}" "${REMOTE_IMAGE_FULL_TAG}"
 
-echo "Pushing container: ${REMOTE_IMAGE_NAME}"
-docker push "${ACR_NAME}.azurecr.io/${REMOTE_IMAGE_NAME}"
+echo "Pushing container: ${REMOTE_IMAGE_FULL_TAG}"
+docker push "${REMOTE_IMAGE_FULL_TAG}"

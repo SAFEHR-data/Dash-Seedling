@@ -17,6 +17,8 @@ on:
         required: true
       WEBAPP_ID:
         required: true
+      SLOT_NAME:
+        required: true
 
 jobs:
   deploy:
@@ -33,5 +35,5 @@ jobs:
         run: |
           az webapp deployment slot swap \
             --ids ${{ secrets.WEBAPP_ID }} \
-            --slot staging \
+            --slot ${{ secrets.SLOT_NAME }} \
             --action swap

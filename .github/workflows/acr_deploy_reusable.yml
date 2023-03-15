@@ -29,6 +29,8 @@ on:
         required: false
       WEBAPP_ID:
         required: false
+      SLOT_NAME:
+        required: false
 
 jobs:
   build-and-deploy:

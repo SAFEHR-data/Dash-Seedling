@@ -42,3 +42,7 @@ USER appUser
 
 # Serve the app on port 8000
 CMD gunicorn --bind 0.0.0.0:8000 app:server
+
+# Set some envrionment variables inside the container
+ARG YOUR_SECRET_CONNECTION_STRING
+ENV YOUR_SECRET_CONNECTION_STRING=${YOUR_SECRET_CONNECTION_STRING}

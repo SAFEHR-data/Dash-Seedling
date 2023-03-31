@@ -31,6 +31,11 @@ on:
         required: false
       SLOT_NAME:
         required: false
+      # Ensure this new secret is set in either:
+      # 1. Settings->Secrets and Variables->New Repository secret, if this will be shared across envrionments
+      # 2. Settings->Envrionments->[envrionment name]->Add secret, for an envrionment specific secret
+      YOUR_SECRET_CONNECTION_STRING:
+        required: true
 
 jobs:
   build-and-deploy:
@@ -65,7 +70,8 @@ jobs:
           ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
           REMOTE_IMAGE_FULL_TAG: ${{ steps.set.outputs.remote_image_full_tag }}
-          DOCKER_BUILDKIT: 1 
+          DOCKER_BUILDKIT: 1
+          YOUR_SECRET_CONNECTION_STRING: ${{ secrets.YOUR_SECRET_CONNECTION_STRING }}
         run: make deploy
 
       - name: Azure login

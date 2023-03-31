@@ -33,4 +33,4 @@ and stop with `make stop-local`.
 Please contact a FlowEHR admin to deploy to the FlowEHR infrastructure where a 
 managed repository will be created with credentials to deploy to the cloud.
 
-To add runtime environment variables into your app follow the [example diff](https://github.com/UCLH-Foundry/Dash-Seedling/compare/335ba5c85d8ec9c1e1ecaf32d86fb1c9b96e37a4...15fa63f6f9a62bfece8f35b1ee5c321b3ce22973) to add a connection string stored as a GitHub secret or variable. This must be performed by a code owner.
+To add runtime environment variables into your app follow the [example diff](https://github.com/UCLH-Foundry/Dash-Seedling/compare/335ba5c85d8ec9c1e1ecaf32d86fb1c9b96e37a4...15fa63f6f9a62bfece8f35b1ee5c321b3ce22973) to, for example, add a connection string stored as a GitHub secret or variable. This must be performed by a code owner.

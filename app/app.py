@@ -60,7 +60,6 @@ def cosmos_client() -> "CosmosClient":
     from azure.cosmos import CosmosClient
     from azure.identity import DefaultAzureCredential
 
-
     client = CosmosClient(
         os.environ["COSMOSDB_ENDPOINT"],
         credential=(DefaultAzureCredential() if environment != "local"

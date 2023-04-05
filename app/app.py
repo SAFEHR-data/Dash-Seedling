@@ -58,12 +58,12 @@ def cosmos_client() -> "CosmosClient":
     Documentation: https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-python
     """
     from azure.cosmos import CosmosClient
-    from azure.identity import AzureCliCredential
+    from azure.identity import DefaultAzureCredential
 
 
     client = CosmosClient(
         os.environ["COSMOSDB_ENDPOINT"],
-        credential=(AzureCliCredential() if environment != "local"
+        credential=(DefaultAzureCredential() if environment != "local"
                     else os.environ["COSMOSDB_KEY"]),
         connection_verify=(environment != "local")
     )

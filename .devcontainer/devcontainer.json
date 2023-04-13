@@ -8,7 +8,9 @@
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	"features": {
-	"azure-cli": "latest",
+	"ghcr.io/devcontainers/features/azure-cli:1": {
+			"version": "2.44.1"
+		},
 	"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 

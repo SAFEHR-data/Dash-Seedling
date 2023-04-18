@@ -7,3 +7,4 @@ pandas==1.5.3
 plotly==5.13.0
 pyodbc==4.0.35
 requests==2.28.2
+opencensus-ext-azure==1.1.9

@@ -18,15 +18,13 @@ from dash import Dash, html, dcc
 from typing import Any
 import plotly.express as px
 import pandas as pd
-from azure_logging import initialize_logging, disable_unwanted_loggers
+from azure_logging import initialize_logging
 
 app = Dash(__name__)
 server = app.server
 environment = os.environ.get("ENVIRONMENT", default="dev")
 
-# Logging initialisation
 initialize_logging(logging.INFO)
-disable_unwanted_loggers()
 logging.info("Logging initialised.")
 
 df = pd.DataFrame({

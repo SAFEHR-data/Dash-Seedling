@@ -55,7 +55,9 @@ def odbc_cursor() -> Any:
     import pyodbc
 
     connection = pyodbc.connect(os.environ["FEATURE_STORE_CONNECTION_STRING"])
-    return connection.cursor()
+    cursor = connection.cursor()
+    logging.info("ODBC connection cursor created.")
+    return cursor 
 
 
 def cosmos_client() -> "CosmosClient":

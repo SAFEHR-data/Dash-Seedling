@@ -26,7 +26,7 @@ class ExceptionTracebackFilter(logging.Filter):
         return True
 
 
-def initialize_logging(logging_level: int, correlation_id: Optional[str] = None) -> logging.LoggerAdapter:
+def initialize_logging(logging_level: int, correlation_id: Optional[str] = None):
     """
     Adds the Application Insights handler for the root logger and sets the given logging level.
     Creates and returns a logger adapter that integrates the correlation ID, if given, to the log messages.
@@ -58,5 +58,3 @@ def initialize_logging(logging_level: int, correlation_id: Optional[str] = None)
 
     adapter = logging.LoggerAdapter(logger, extra)
     adapter.debug(f"Logger adapter initialized with extra: {extra}")
-
-    return adapter

@@ -37,7 +37,7 @@ def initialize_logging(logging_level: int, correlation_id: Optional[str] = None)
     logger = logging.getLogger()
 
     try:
-        # picks up APPLICATIONINSIGHTS_CONNECTION_STRING automatically
+        # picks up os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] automatically
         azurelog_handler = AzureLogHandler()
         azurelog_handler.add_telemetry_processor(telemetry_processor_callback_function)
         azurelog_handler.addFilter(ExceptionTracebackFilter())

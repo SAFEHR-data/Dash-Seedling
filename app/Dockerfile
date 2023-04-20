@@ -18,7 +18,7 @@ FROM python:3.10.10-bullseye
 WORKDIR /app
 
 # Copy the required files into the working directory
-COPY *.py requirements.txt /app/
+COPY . /app/
 
 # Install the odbc Drivers to access the database
 RUN apt-get update && apt-get install -y --no-install-recommends locales apt-transport-https \

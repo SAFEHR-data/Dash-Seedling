@@ -5,8 +5,9 @@ from opencensus.ext.azure.log_exporter import AzureLogHandler
 from opencensus.trace import config_integration
 from opencensus.trace.samplers import AlwaysOnSampler
 from opencensus.trace.tracer import Tracer
+from opencensus.ext.azure.common.protocol import Envelope
 
-def telemetry_processor_callback_function(envelope):
+def telemetry_processor_callback_function(envelope: Envelope):
     envelope.tags['ai.cloud.role'] = 'model-api'
     
 

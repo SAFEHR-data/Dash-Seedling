@@ -24,7 +24,7 @@ app = Dash(__name__)
 server = app.server
 environment = os.environ.get("ENVIRONMENT", default="dev")
 
-initialize_logging(logging.INFO)
+initialize_logging(environment, logging.INFO)
 logging.info("Logging initialised.")
 
 df = pd.DataFrame({

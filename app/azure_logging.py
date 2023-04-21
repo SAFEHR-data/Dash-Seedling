@@ -27,7 +27,7 @@ class ExceptionTracebackFilter(logging.Filter):
         return True
 
 
-def initialize_logging(logging_level: int, correlation_id: Optional[str] = None):
+def initialize_logging(environment: str, logging_level: int, correlation_id: Optional[str] = None):
     """
     Adds the Application Insights handler for the root logger and sets the given logging level.
     Creates and returns a logger adapter that integrates the correlation ID, if given, to the log messages.
@@ -45,7 +45,12 @@ def initialize_logging(logging_level: int, correlation_id: Optional[str] = None)
         azurelog_handler.addFilter(ExceptionTracebackFilter())
         logger.addHandler(azurelog_handler)
     except ValueError as e:
-        logger.error(f"Failed to set Application Insights logger handler: {e}")
+        if environment == "local":
+            logger.info(f"Application Insights logger handler not set.: {e}") 
+        else:
+            logger.error(f"Failed to set Application Insights logger handler: {e}")
+            raise e 
+        
 
     config_integration.trace_integrations(['logging'])
     logging.basicConfig(level=logging_level, format='%(asctime)s %(message)s')

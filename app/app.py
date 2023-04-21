@@ -13,14 +13,19 @@
 #  limitations under the License.
 
 import os
+import logging
 from dash import Dash, html, dcc
 from typing import Any
 import plotly.express as px
 import pandas as pd
+from azure_logging import initialize_logging
 
 app = Dash(__name__)
 server = app.server
 environment = os.environ.get("ENVIRONMENT", default="dev")
+
+initialize_logging(environment, logging.INFO)
+logging.info("Logging initialised.")
 
 df = pd.DataFrame({
     "Seeds": ["Hibiscus"],
@@ -48,7 +53,9 @@ def odbc_cursor() -> Any:
     import pyodbc
 
     connection = pyodbc.connect(os.environ["FEATURE_STORE_CONNECTION_STRING"])
-    return connection.cursor()
+    cursor = connection.cursor()
+    logging.info("ODBC connection cursor created.")
+    return cursor 
 
 
 def cosmos_client() -> "CosmosClient":
@@ -66,8 +73,10 @@ def cosmos_client() -> "CosmosClient":
                     else os.environ["COSMOSDB_KEY"]),
         connection_verify=(environment != "local")
     )
+    logging.info("Cosmos client created.")
     return client
 
 
 if __name__ == '__main__':
+    logging.info("Starting app...")
     app.run_server(host='0.0.0.0', port=8000, debug=(environment == "local"))

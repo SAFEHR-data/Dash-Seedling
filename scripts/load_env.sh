@@ -42,6 +42,6 @@ function export_local_env(){
 if [ "${ENVIRONMENT:=local}" = "local" ]; then
     export_local_env
 else
-    echo "Running in CI. Expecting envrionment variables to be set"
+    echo "Running in CI. Expecting environment variables to be set"
     export LOCAL_IMAGE_NAME="app"
 fi

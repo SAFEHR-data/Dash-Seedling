@@ -18,7 +18,7 @@ from dash import Dash, html, dcc
 from typing import Any
 import plotly.express as px
 import pandas as pd
-from azure_logging import initialize_logging
+from log import initialize_logging
 
 app = Dash(__name__)
 server = app.server

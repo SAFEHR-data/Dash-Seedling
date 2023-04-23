@@ -13,23 +13,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# Load envrionment variables. Usage: . load_env.sh dev
+
 set -o errexit
 set -o pipefail
 set -o nounset
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ENVIRONMENT_FILEPATH="${SCRIPT_DIR}/../.env" 
-
-
-function export_local_env(){
-    if [ -f "$ENVIRONMENT_FILEPATH" ]; then
-        read -ra args < <(grep -v '^#' ${SCRIPT_DIR}/../.env | xargs)
-        export "${args[@]}"
-        echo "Exported environment variables in .env"
-    else
-        echo "Expecting a .env file which did not exist"
-        exit 1
-    fi
+function export_addtional_env_vars_for_local_services(){
+    echo "Exporting additional vars for emulated SQL server and CosmosDB"
 
     # Admin username and password for the SQL server. The username must be "sa"
     export LOCAL_MSSQL_USERNAME="sa"
@@ -39,9 +30,29 @@ function export_local_env(){
     export LOCAL_COSMOS_IP_ADDRESS="`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
 }
 
-if [ "${ENVIRONMENT:=local}" = "local" ]; then
-    export_local_env
+function export_locally_defined_env(){
+    set -a
+    source "$ENVIRONMENT_FILEPATH"
+    set +a
+    echo "Exported environment variables in .env.$ENVIRONMENT"
+}
+
+if [[ $# -eq 0 ]] ; then
+    echo "Expecting \$ENVIRONMENT to be set"
+else
+    export ENVIRONMENT="$1"
+fi
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ENVIRONMENT_FILEPATH="${SCRIPT_DIR}/../.env.$ENVIRONMENT" 
+
+if [ -f "$ENVIRONMENT_FILEPATH" ]; then
+    export_locally_defined_env
 else
     echo "Running in CI. Expecting environment variables to be set"
     export LOCAL_IMAGE_NAME="app"
+fi
+
+if [ "$ENVIRONMENT"  == "local" ]; then
+    export_addtional_env_vars_for_local_services
 fi

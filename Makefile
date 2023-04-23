@@ -19,6 +19,12 @@ MAKEFILE_DIR := $(dir $(MAKEFILE_FULLPATH))
 
 target_title = @echo -e "🌱$(1)..."
 
+define run  # Arguments: envrionment name, script path
+	$(call target_title, "Running $(2) with envrionment=$(1)") \
+	&& . ${MAKEFILE_DIR}/scripts/load_env.sh $(1) \
+	&& ${MAKEFILE_DIR}/$(2)
+endef
+
 help: ## Show this help
 	@echo
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -36,12 +42,11 @@ build:  ## Build the docker image
 	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
 	&& ${MAKEFILE_DIR}/scripts/build.sh
 
-serve-local:  ## Serve the app locally
-	$(call target_title, "Serving locally") \
-	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
-	&& ${MAKEFILE_DIR}/local/serve.sh
+serve-local:  ## Serve the app locally with docker services
+	$(call run,local,local/serve.sh)
 
 stop-local:  ## Stop a locally running version
-	$(call target_title, "Stopping") \
-	&& . ${MAKEFILE_DIR}/scripts/load_env.sh \
-	&& ${MAKEFILE_DIR}/local/stop.sh
+	$(call run,local,local/stop.sh)
+
+serve-dev:  ## Serve the app locally with remote services
+	$(call run,dev,scripts/serve_dev.sh)

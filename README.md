@@ -8,11 +8,11 @@ Template repository for building [dash](https://dash.plotly.com/) apps on [FlowE
 
 ## Deploying
 
-### Locally
+### Fully local
 
-1. Configure the local configuration file
+1. Create and configure the local configuration file
 ```
-cp .env.sample .env
+cp .env.local.sample .env.local
 ```
 
 2. Run `make serve-local` to build the sample Dash Docker container and serve it locally
@@ -27,6 +27,16 @@ and stop with `make stop-local`.
 
 > **Note**
 > Local serving does not work on ARM, including Apple M chips.
+
+### Local with Azure services
+
+1. Create and configure the configuration file, replacing `__CHANGE_ME__` with appropriate values
+```
+cp .env.dev.sample .env.dev
+```
+
+2. Run `make serve-dev`
+
 
 ### CI
 

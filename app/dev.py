@@ -25,9 +25,6 @@ def db_aad_token_struct() -> bytes:
     credential = DefaultAzureCredential()
     token = credential.get_token("https://database.windows.net/")[0]
 
-    token_bytes = b''
-    for i in bytes(token, "UTF-8"):
-        token_bytes += bytes({i})
-        token_bytes += bytes(1)
+    token_bytes = bytes(token, "UTF-16 LE")
 
     return struct.pack("=i", len(token_bytes)) + token_bytes

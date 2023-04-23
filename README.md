@@ -35,8 +35,9 @@ and stop with `make stop-local`.
 cp .env.dev.sample .env.dev
 ```
 
-2. Run `make serve-dev`
+2. Run `az login` to login to the Azure CLI
 
+3. Run `make serve-dev`
 
 ### CI
 

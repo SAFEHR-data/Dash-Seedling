@@ -14,7 +14,6 @@
 
 import os
 import logging
-import struct
 from dash import Dash, html, dcc
 from typing import Any
 import plotly.express as px

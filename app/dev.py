@@ -21,7 +21,7 @@ def db_aad_token_struct() -> bytes:
     Kindly leveraged from this SO answer: https://stackoverflow.com/a/67692382
     """
     from azure.identity import DefaultAzureCredential
-    
+
     credential = DefaultAzureCredential()
     token = credential.get_token("https://database.windows.net/")[0]
 

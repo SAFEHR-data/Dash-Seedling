@@ -22,7 +22,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # Build in a subshell for the parent architecture
 ( 
     cd "$SCRIPT_DIR"/../app/
-  #  docker build -t "$LOCAL_IMAGE_NAME" .
+    docker build -t "$LOCAL_IMAGE_NAME" .
 )
 
 echo "Running $LOCAL_IMAGE_NAME container.."

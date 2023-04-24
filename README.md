@@ -10,6 +10,8 @@ Template repository for building [dash](https://dash.plotly.com/) apps on [FlowE
 
 ### Fully local
 
+For debugging locally without any remote Azure services, Seedlings provide a basic Docker Compose file for mocking backend services. This is useful in the initial stages of bootstrapping your app.
+
 1. Create and configure the local configuration file
 ```
 cp .env.local.sample .env.local
@@ -29,6 +31,8 @@ and stop with `make stop-local`.
 > Local serving does not work on ARM, including Apple M chips.
 
 ### Local with Azure services
+
+When you want to test your app with services from a FlowEHR dev environment (including its synthetic feature data), you can contact your FlowEHR admin for the appropriate connection strings and provide them in the following steps:
 
 1. Create and configure the configuration file, replacing `__CHANGE_ME__` with appropriate values
 ```

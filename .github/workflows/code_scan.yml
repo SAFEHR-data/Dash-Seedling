@@ -1,4 +1,4 @@
-name: Semgrep CI
+name: Code Scanning
 
 on:
   pull_request:

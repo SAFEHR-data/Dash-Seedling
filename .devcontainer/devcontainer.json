@@ -2,32 +2,21 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "Dash Seedling",
-	"build": {
-		"dockerfile": "../app/Dockerfile",
-		"context": "../app/"
-	},
+	"image": "mcr.microsoft.com/devcontainers/python:0-3.10",
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 	"ghcr.io/devcontainers/features/azure-cli:1": {
 			"version": "2.44.1"
 		},
-	"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+	"ghcr.io/jlaundry/devcontainer-features/mssql-odbc-driver:1": {
+		"version": "18"
+	}
 	},
 
 	// Configure customizations for VSCode
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.profiles.linux": {
-					"bash": {
-					  "path": "/bin/bash",
-					  "overrideName": true
-					}
-				  },
-				  "terminal.integrated.defaultProfile.linux": "bash"
-			}
-		}
-	}
+	"customizations": {}
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

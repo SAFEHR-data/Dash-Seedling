@@ -1,4 +1,5 @@
-.env
+.env*
+!*.env.*.sample
 app/app/
 __pycache__/
 venv/

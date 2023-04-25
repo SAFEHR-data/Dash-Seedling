@@ -18,7 +18,9 @@ from dash import Dash, html, dcc
 from typing import Any
 import plotly.express as px
 import pandas as pd
+
 from azure_logging import initialize_logging
+from dev import db_aad_token_struct
 
 app = Dash(__name__)
 server = app.server
@@ -27,21 +29,18 @@ environment = os.environ.get("ENVIRONMENT", default="dev")
 initialize_logging(environment, logging.INFO)
 logging.info("Logging initialised.")
 
-df = pd.DataFrame({
-    "Seeds": ["Hibiscus"],
-    "Amount": [1],
-})
+df = pd.DataFrame(
+    {
+        "Seeds": ["Hibiscus"],
+        "Amount": [1],
+    }
+)
 
 fig = px.bar(df, x="Seeds", y="Amount", barmode="group")
 
-app.layout = html.Div(children=[
-    html.H1(children=f'Dash app'),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
+app.layout = html.Div(
+    children=[html.H1(children=f"Dash app"), dcc.Graph(id="example-graph", figure=fig)]
+)
 
 
 def odbc_cursor() -> Any:
@@ -52,10 +51,18 @@ def odbc_cursor() -> Any:
     """
     import pyodbc
 
-    connection = pyodbc.connect(os.environ["FEATURE_STORE_CONNECTION_STRING"])
+    connection_string = os.environ["FEATURE_STORE_CONNECTION_STRING"]
+
+    if "authentication" not in connection_string.lower():
+        SQL_COPT_SS_ACCESS_TOKEN = 1256
+        attrs_before = {SQL_COPT_SS_ACCESS_TOKEN: db_aad_token_struct()}
+    else:
+        attrs_before = {}
+
+    connection = pyodbc.connect(connection_string, attrs_before=attrs_before)
     cursor = connection.cursor()
     logging.info("ODBC connection cursor created.")
-    return cursor 
+    return cursor
 
 
 def cosmos_client() -> "CosmosClient":
@@ -69,14 +76,19 @@ def cosmos_client() -> "CosmosClient":
 
     client = CosmosClient(
         os.environ["COSMOSDB_ENDPOINT"],
-        credential=(DefaultAzureCredential() if environment != "local"
-                    else os.environ["COSMOSDB_KEY"]),
-        connection_verify=(environment != "local")
+        credential=(
+            DefaultAzureCredential()
+            if environment != "local"
+            else os.environ["COSMOSDB_KEY"]
+        ),
+        connection_verify=(environment != "local"),
     )
     logging.info("Cosmos client created.")
     return client
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.info("Starting app...")
-    app.run_server(host='0.0.0.0', port=8000, debug=(environment == "local"))
+    app.run_server(
+        host="0.0.0.0", port=8000, debug=os.environ.get("DEBUG", "False") == "True"
+    )

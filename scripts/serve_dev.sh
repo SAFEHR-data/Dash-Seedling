@@ -20,8 +20,13 @@ set -o nounset
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Build in a subshell for the parent architecture
-( 
+(
     cd "$SCRIPT_DIR"/../app/
+    mkdir -p .etc_apt
+    if [ -d /etc/apt ]; then
+        echo "Copying host apt configuration"
+        (cp -r /etc/apt/* .etc_apt) || echo "Failed to copy /etc/apt/"
+    fi
     docker build -t "$LOCAL_IMAGE_NAME" .
 )
 

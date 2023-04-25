@@ -17,24 +17,28 @@ FROM python:3.10.10-bullseye
 # Create and run commands in /app inside the container
 WORKDIR /app
 
+# Copy any apt configuration into the container, required for AzureTRE builds
+COPY .etc_apt /etc/apt/
+
 # Install the azure cli
 RUN apt-get update \
     && apt-get -y --no-install-recommends install ca-certificates curl apt-transport-https lsb-release gnupg \
-    && mkdir -p /etc/apt/keyrings \
-    && curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null \
-    && chmod go+r /etc/apt/keyrings/microsoft.gpg \
-    && AZ_REPO=$(lsb_release -cs) \
-    && echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
-    tee /etc/apt/sources.list.d/azure-cli.list \
+    && (mkdir -p /etc/apt/keyrings \
+        && curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg > /dev/null \
+        && chmod go+r /etc/apt/keyrings/microsoft.gpg \
+        && AZ_REPO=$(lsb_release -cs) \
+        && echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+        tee /etc/apt/sources.list.d/azure-cli.list \
+        ) || true \ 
     && apt-get update \
     && apt-get -y --no-install-recommends install azure-cli
 
 # Install the odbc Drivers to access the database
 RUN apt-get update \
     && apt-get install -y --no-install-recommends locales apt-transport-https \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/11/prod.list \
-        > /etc/apt/sources.list.d/mssql-release.list \
+    && (curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+        && curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+        ) || true \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
     && locale-gen \
     && apt-get update \

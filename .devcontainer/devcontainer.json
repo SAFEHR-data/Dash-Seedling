@@ -2,33 +2,28 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "Dash Seedling",
-	"build": {
-		"dockerfile": "../app/Dockerfile",
-		"context": "../app/"
-	},
+	"image": "mcr.microsoft.com/devcontainers/python:0-3.10",
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
-	},
-
-	// Configure customizations for VSCode
-	"customizations": {
-		"vscode": {
-			"settings": {
-				"terminal.integrated.profiles.linux": {
-					"bash": {
-					  "path": "/bin/bash",
-					  "overrideName": true
-					}
-				  },
-				  "terminal.integrated.defaultProfile.linux": "bash"
-			}
-		}
+	"ghcr.io/devcontainers/features/azure-cli:1": {
+			"version": "2.44.1"
+		},
+	"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+	"ghcr.io/jlaundry/devcontainer-features/mssql-odbc-driver:1": {
+		"version": "18"
 	}
+	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": ""
+	"postCreateCommand": "pip3 install --user -r app/requirements.txt"
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
 }

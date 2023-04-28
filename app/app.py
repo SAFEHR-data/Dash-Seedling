@@ -19,6 +19,7 @@ from typing import Any
 import plotly.express as px
 import pandas as pd
 from azure_logging import initialize_logging
+from azure_log_exporter import setup_azurelog_exporter
 
 app = Dash(__name__)
 server = app.server
@@ -26,6 +27,8 @@ environment = os.environ.get("ENVIRONMENT", default="dev")
 
 initialize_logging(environment, logging.INFO)
 logging.info("Logging initialised.")
+instrumentation_key = os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING", default="")
+setup_azurelog_exporter(environment, app.server, instrumentation_key)
 
 df = pd.DataFrame({
     "Seeds": ["Hibiscus"],

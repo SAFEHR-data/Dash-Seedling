@@ -4,7 +4,6 @@ import pyodbc
 from typing import Any
 from datetime import datetime, timezone
 from azure.cosmos import CosmosClient
-from azure.cosmos import CosmosClient
 from azure.identity import DefaultAzureCredential
 import struct
 

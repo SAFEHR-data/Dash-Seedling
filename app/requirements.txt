@@ -9,5 +9,6 @@ pyodbc==4.0.35
 requests==2.28.2
 opencensus-ext-azure==1.1.9
 opencensus-ext-logging==0.1.1
+opencensus-ext-flask==0.8.1
 adal==1.2.7
 azure-keyvault==4.2.0

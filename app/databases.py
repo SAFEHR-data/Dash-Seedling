@@ -92,15 +92,6 @@ class CosmosDBLongCallbackManager:
         self.expire = expire
         self.partition_key = partition_key
 
-        self.create_container_if_not_exists()
-
-    def create_container_if_not_exists(self):
-        container_list = list(self.get_database_client().list_containers())
-        container_names = [container["id"] for container in container_list]
-        if self.container_name not in container_names:
-            self.get_database_client().create_container(
-                id=self.container_name, partition_key=self.partition_key
-            )
 
     def is_expired(self, item):
         if not item or "timestamp" not in item or "expire" not in item:

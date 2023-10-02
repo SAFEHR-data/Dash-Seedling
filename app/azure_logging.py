@@ -68,7 +68,7 @@ def initialize_logging(
     ai_conn_string = os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
     if (ai_conn_string is None or ai_conn_string == ""):
         logger.info(f"APPLICATIONINSIGHTS_CONNECTION_STRING unset or empty. Azure logging will not be enabled.")
-        return;
+        return
 
     try:
         # picks up os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] automatically

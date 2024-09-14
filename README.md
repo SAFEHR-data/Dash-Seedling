@@ -1,6 +1,6 @@
 # 🌱 Dash-Seedling
 
-Template repository for building [dash](https://dash.plotly.com/) apps on [FlowEHR](https://github.com/UCLH-Foundry/FlowEHR).
+Template repository for building [dash](https://dash.plotly.com/) apps on [FlowEHR](https://github.com/SAFEHR-data/FlowEHR).
 
 > **Warning**
 > This repository is a _work in progress_. We're working towards a v0.1.0 release

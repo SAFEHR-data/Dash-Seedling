@@ -28,7 +28,7 @@ make serve-local
 and stop with `make stop-local`.
 
 > **Note**
-> Local serving does not work on ARM, including Apple M chips.
+> Local serving does not work on ARM, including Apple M chips. We recommend using [GitHub Codespaces](https://github.com/features/codespaces) if local serving is required.
 
 ### Local with Azure services
 

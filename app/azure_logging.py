@@ -65,6 +65,11 @@ def initialize_logging(
     logger = logging.getLogger()
     logging.basicConfig(level=logging_level, format="%(asctime)s %(message)s")
 
+    ai_conn_string = os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
+    if (ai_conn_string is None or ai_conn_string == ""):
+        logger.info(f"APPLICATIONINSIGHTS_CONNECTION_STRING unset or empty. Azure logging will not be enabled.")
+        return
+
     try:
         # picks up os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] automatically
         azurelog_handler = AzureLogHandler()
@@ -72,11 +77,8 @@ def initialize_logging(
         azurelog_handler.addFilter(ExceptionTracebackFilter())
         logger.addHandler(azurelog_handler)
     except ValueError as e:
-        if os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING") is None:
-            logger.info(f"Application Insights logger handler not set")
-        else:
-            logger.error(f"Failed to set Application Insights logger handler: {e}")
-            raise e
+        logger.error(f"Failed to set Application Insights logger handler: {e}")
+        raise e
 
     config_integration.trace_integrations(["logging"])
     Tracer(sampler=AlwaysOnSampler())
